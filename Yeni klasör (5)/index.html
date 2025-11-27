@@ -13,7 +13,7 @@
             display: flex;
             flex-direction: column;
             background: #ffffff; /* beyaz arka plan */
-            color: #000000; /* yazılar siyah */
+            color: #000000; 
             position: relative;
             overflow: hidden;
         }
@@ -72,11 +72,9 @@
 </head>
 <body>
     <header>StarkConnet</header>
-    <!-- StarkConnet başlığının hemen altında toplam coin sayacı -->
     <div id="coins">0</div>
 
     <main>
-        <!-- Tıklanabilir Stark görseli -->
         <img id="stark" src="https://raw.githubusercontent.com/mkorkmaz123/starkconnet-game/main/stark2.png" alt="Stark">
     </main>
 
@@ -94,37 +92,36 @@
             coin.style.top = y + 'px';
             document.body.appendChild(coin);
 
-            setTimeout(() => {
-                coin.remove();
-            }, 1000);
+            setTimeout(() => coin.remove(), 1000);
         }
 
-        // Coin artırma fonksiyonu
         function addCoin(auto=false) {
             coins += 1;
             coinsSpan.textContent = coins;
 
-            if (!auto) {
-                // Görselin ortasına göre pozisyon al
+            if(!auto) {
                 const rect = stark.getBoundingClientRect();
                 const x = rect.left + rect.width / 2;
                 const y = rect.top;
-
                 showCoin(x, y);
 
-                // Telegram WebApp veri gönderimi
                 if(window.Telegram && window.Telegram.WebApp) {
                     window.Telegram.WebApp.sendData(JSON.stringify({coins: 1}));
                 }
             }
         }
 
-        // Stark tıklayınca coin ekle
+        // Tıklama ve dokunmayı destekle
         stark.addEventListener('click', () => addCoin());
+        stark.addEventListener('touchstart', () => addCoin());
 
-        // Auto coin artışı: 1 saniyede 1 coin
+        // Auto coin: 1 saniyede 1
         setInterval(() => addCoin(true), 1000);
 
+        // Telegram WebApp hazır
+        if(window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.ready();
+        }
     </script>
 </body>
 </html>
