@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>StarkConnet</title>
+    <style>
+        body { font-family: Arial; text-align: center; margin-top: 50px; }
+        button { font-size: 20px; padding: 10px 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>StarkConnet Oyun</h1>
+    <p>Coin: <span id="coins">0</span></p>
+    <button id="tapButton">Tıkla & Coin Kazan</button>
+
+    <script>
+        let coins = 0;
+        const coinsSpan = document.getElementById('coins');
+        const btn = document.getElementById('tapButton');
+
+        btn.addEventListener('click', () => {
+            coins += 1;
+            coinsSpan.textContent = coins;
+
+            // Telegram bot ile veri göndermek için
+            if(window.Telegram.WebApp) {
+                window.Telegram.WebApp.sendData(JSON.stringify({coins: coins}));
+            }
+        });
+    </script>
+</body>
+</html>
