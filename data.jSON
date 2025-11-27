@@ -1,0 +1,68 @@
+{
+    "1762302801": {
+        "coins": 15,
+        "taps": 15,
+        "cards": {
+            "Bitcoin": {
+                "level": 1
+            },
+            "Ethereum": {
+                "level": 1
+            },
+            "BNB": {
+                "level": 1
+            },
+            "Solana": {
+                "level": 1
+            },
+            "TON": {
+                "level": 1
+            },
+            "Dogecoin": {
+                "level": 1
+            },
+            "Shiba": {
+                "level": 1
+            },
+            "XRP": {
+                "level": 1
+            },
+            "Cardano": {
+                "level": 1
+            },
+            "Tron": {
+                "level": 1
+            },
+            "Polygon": {
+                "level": 1
+            },
+            "DOT": {
+                "level": 1
+            },
+            "AVAX": {
+                "level": 1
+            },
+            "ATOM": {
+                "level": 1
+            },
+            "UNI": {
+                "level": 1
+            },
+            "Litecoin": {
+                "level": 1
+            },
+            "Chainlink": {
+                "level": 1
+            },
+            "XLM": {
+                "level": 1
+            },
+            "APT": {
+                "level": 1
+            },
+            "MINA": {
+                "level": 1
+            }
+        }
+    }
+}
