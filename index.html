@@ -6,10 +6,12 @@
     <style>
         body { font-family: Arial; text-align: center; margin-top: 50px; }
         button { font-size: 20px; padding: 10px 20px; cursor: pointer; }
+        h1 { color: #2c3e50; }
+        #coins { font-weight: bold; color: #e67e22; }
     </style>
 </head>
 <body>
-    <h1>StarkConnet Oyun</h1>
+    <h1>🎮 StarkConnet Oyun</h1>
     <p>Coin: <span id="coins">0</span></p>
     <button id="tapButton">Tıkla & Coin Kazan</button>
 
@@ -22,9 +24,16 @@
             coins += 1;
             coinsSpan.textContent = coins;
 
-            // Telegram bot ile veri göndermek için
+            // Telegram bot'a coin gönder
             if(window.Telegram.WebApp) {
-                window.Telegram.WebApp.sendData(JSON.stringify({coins: coins}));
+                window.Telegram.WebApp.sendData(JSON.stringify({coins: 1}));
+            }
+        });
+
+        // Web App açıldığında Telegram WebApp API hazırla
+        window.addEventListener('DOMContentLoaded', () => {
+            if(window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.ready();
             }
         });
     </script>
