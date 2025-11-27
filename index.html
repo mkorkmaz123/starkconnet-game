@@ -7,78 +7,124 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            text-align: center;
-            background: linear-gradient(to bottom, #1abc9c, #16a085);
-            color: #fff;
             margin: 0;
             padding: 0;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background: #ffffff; /* beyaz arka plan */
+            color: #000000; /* yazılar siyah */
+            position: relative;
+            overflow: hidden;
         }
 
-        h1 {
+        header {
+            text-align: center;
+            padding: 20px 0;
             font-size: 2.5em;
-            margin-bottom: 20px;
+            font-weight: bold;
             text-shadow: 2px 2px #00000050;
         }
 
+        #coins {
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #f1c40f;
+            text-shadow: 1px 1px #00000050;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 20px;
+        }
+
         #stark {
-            width: 200px;
-            margin-bottom: 30px;
+            width: 150px;
             cursor: pointer;
             transition: transform 0.1s, box-shadow 0.1s;
         }
 
         #stark:active {
             transform: scale(0.95);
-            box-shadow: 0 0 20px #fff;
+            box-shadow: 0 0 20px #000;
         }
 
-        #coins {
-            font-size: 2em;
-            font-weight: bold;
-            color: #f1c40f;
-            margin-bottom: 20px;
-            text-shadow: 1px 1px #00000050;
+        .coin-fly {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            pointer-events: none;
+            animation: flyUp 1s ease-out forwards;
+            transform: translate(-50%, 0);
+        }
+
+        @keyframes flyUp {
+            0% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -150px) scale(1.5); opacity: 0; }
         }
     </style>
 </head>
 <body>
-    <h1>🎮 StarkConnet</h1>
-    <!-- Raw link ile tıklanabilir Stark görseli -->
-    <img id="stark" src="https://raw.githubusercontent.com/mkorkmaz123/starkconnet-game/main/stark.png" alt="Stark">
-    <p>Coin: <span id="coins">0</span></p>
+    <header>StarkConnet</header>
+    <!-- StarkConnet başlığının hemen altında toplam coin sayacı -->
+    <div id="coins">0</div>
+
+    <main>
+        <!-- Tıklanabilir Stark görseli -->
+        <img id="stark" src="https://raw.githubusercontent.com/mkorkmaz123/starkconnet-game/main/stark2.png" alt="Stark">
+    </main>
 
     <script>
         let coins = 0;
+        const stark = document.getElementById('stark');
         const coinsSpan = document.getElementById('coins');
+        const coinImgUrl = "https://raw.githubusercontent.com/mkorkmaz123/starkconnet-game/main/starkcoin.png";
 
-        window.addEventListener('DOMContentLoaded', () => {
-            if(window.Telegram && window.Telegram.WebApp) {
-                window.Telegram.WebApp.ready();
+        function showCoin(x, y) {
+            const coin = document.createElement('img');
+            coin.src = coinImgUrl;
+            coin.className = 'coin-fly';
+            coin.style.left = x + 'px';
+            coin.style.top = y + 'px';
+            document.body.appendChild(coin);
 
-                const stark = document.getElementById('stark');
-                stark.addEventListener('click', () => {
-                    coins += 1;
-                    coinsSpan.textContent = coins;
+            setTimeout(() => {
+                coin.remove();
+            }, 1000);
+        }
 
-                    // Telegram bot'a coin gönder
+        // Coin artırma fonksiyonu
+        function addCoin(auto=false) {
+            coins += 1;
+            coinsSpan.textContent = coins;
+
+            if (!auto) {
+                // Görselin ortasına göre pozisyon al
+                const rect = stark.getBoundingClientRect();
+                const x = rect.left + rect.width / 2;
+                const y = rect.top;
+
+                showCoin(x, y);
+
+                // Telegram WebApp veri gönderimi
+                if(window.Telegram && window.Telegram.WebApp) {
                     window.Telegram.WebApp.sendData(JSON.stringify({coins: 1}));
-                });
-            } else {
-                // Tarayıcıda test etmek için tıklama
-                const stark = document.getElementById('stark');
-                stark.addEventListener('click', () => {
-                    coins += 1;
-                    coinsSpan.textContent = coins;
-                });
+                }
             }
-        });
+        }
+
+        // Stark tıklayınca coin ekle
+        stark.addEventListener('click', () => addCoin());
+
+        // Auto coin artışı: 1 saniyede 1 coin
+        setInterval(() => addCoin(true), 1000);
+
     </script>
 </body>
 </html>
-
-
